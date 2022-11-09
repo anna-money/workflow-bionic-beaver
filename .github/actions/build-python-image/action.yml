@@ -1,0 +1,67 @@
+name: Build python image
+description: Build a python application in a docker container
+
+inputs:
+  name:
+    description: Application name
+    required: true
+  version:
+    description: Application version
+    required: true
+  version_path:
+    description: Application version path
+    required: true
+  registry:
+    description: Docker registry url
+    required: true
+  gcloud_service_account_key:
+    description: Google Cloud service account key
+    required: true
+  pypi_user:
+    description: PyPI user
+    required: true
+  pypi_password:
+    description: PyPI password
+    required: true
+  mark_latest:
+    description: Mark as latest
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  env:
+    DOCKER_IMAGE: ${{ inputs.registry }}/${{ inputs.name }}
+  steps:
+    - uses: actions/checkout@v3
+    - uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ inputs.gcloud_service_account_key }}
+    - uses: google-github-actions/setup-gcloud@v0
+      with:
+        version: "275.0.0"
+    - name: GCP login
+      run: |
+        gcloud auth configure-docker
+    - name: Update tag
+      run: echo "__version__ = '${{ inputs.version }}'" > ${{ inputs.version_path }}
+    - name: Build
+      env:
+        DOCKER_BUILDKIT: 1
+      run: >
+        docker pull ${DOCKER_IMAGE}:latest || true
+
+        docker build -t ci:temp --cache-from ${DOCKER_IMAGE}:latest
+        --build-arg GIT_REVISION=$GITHUB_SHA
+        --build-arg PYPI_USER=${{ inputs.pypi_user }}
+        --build-arg PYPI_PASSWORD=${{ inputs.pypi_password }}
+        --build-arg BUILDKIT_INLINE_CACHE=1 .
+    - name: Push
+      run: |
+        docker tag ci:temp ${DOCKER_IMAGE}:${{ inputs.version }}
+        docker push ${DOCKER_IMAGE}:${{ inputs.version }}
+    - name: Push latest
+      if: ${{ inputs.mark_latest == 'true' }}
+      run: |
+        docker tag ci:temp ${DOCKER_IMAGE}:latest
+        docker push ${DOCKER_IMAGE}:latest

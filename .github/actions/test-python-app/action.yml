@@ -1,0 +1,60 @@
+name: Test python app
+description: Checks if there are any changes in the path
+
+inputs:
+  python_version:
+    description: Python version
+    required: false
+    default: "3.11"
+  pypi_user:
+    description: PyPI user
+    required: true
+  pypi_password:
+    description: PyPI password
+    required: true
+  rmq_hosts:
+    description: RabbitMQ hosts
+    required: false
+    default: ""
+  postgres_host:
+    description: Postgres host
+    required: false
+    default: ""
+  postgres_password:
+    description: Postgres password
+    required: false
+    default: ""
+  postgres_db_name:
+    description: Postgres database
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      if: ${{ github.event_name != 'pull_request_target' }}
+      uses: actions/checkout@v3
+    - name: Checkout PR
+      if: ${{ github.event_name == 'pull_request_target' }}
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Setup python
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Install dependencies
+      shell: bash
+      env:
+        PYPI_USER: ${{ inputs.pypi_user }}
+        PYPI_PASSWORD: ${{ inputs.pypi_password }}
+      run: make install-dev
+    - name: Test with pytest
+      shell: bash
+      env:
+        POSTGRES_PASSWORD: ${{ inputs.postgres_password }}
+        POSTGRES_TEST_DB_NAME: ${{ inputs.postgres_db_name }}
+        POSTGRES_HOST: ${{ inputs.postgres_host }}
+        RMQ_HOSTS: ${{ inputs.rmq_hosts }}
+      run: make test

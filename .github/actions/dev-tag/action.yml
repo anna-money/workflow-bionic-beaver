@@ -1,0 +1,18 @@
+name: Dev tag
+description: Create a dev tag for a PR
+
+outputs:
+  tag:
+    description: 'Generated tag'
+    value: ${{ steps.dev-tag.outputs.tag }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Get git tag
+      shell: bash
+      id: dev-tag
+      run: echo "tag=$(git describe --tags --long --dirty | sed -E 's/(.*)-(.*)-(.*)/\1.dev\2+\3/')" >> $GITHUB_OUTPUT

@@ -1,0 +1,72 @@
+name: Test and lint
+
+on:
+  workflow_call:
+    inputs:
+      python_version:
+        required: false
+        type: string
+        default: "3.11"
+      postgres_version:
+        required: false
+        type: string
+        default: "14-alpine"
+      rabbitmq_version:
+        required: false
+        type: string
+        default: "3-management-alpine"
+    secrets:
+      pypi_user:
+        description: PyPI user
+        required: true
+      pypi_password:
+        description: PyPI password
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:${{ inputs.postgres_version }}
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_database
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      rmq:
+        image: rabbitmq:${{ inputs.rabbitmq_version }}
+        ports:
+          - 5672:5672
+
+    steps:
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
+        with:
+          python_version: ${{ inputs.python_version }}
+          pypi_user: ${{ secrets.pypi_user }}
+          pypi_password: ${{ secrets.pypi_password }}
+          rmq_hosts: 127.0.0.1:5672
+          postgres_host: 127.0.0.1
+          postgres_password: postgres
+          postgres_db_name: test_database
+
+
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 5
+
+    steps:
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/pre-commit@master
+        with:
+          python_version: ${{ inputs.python_version }}
+          pypi_user: ${{ secrets.pypi_user }}
+          pypi_password: ${{ secrets.pypi_password }}

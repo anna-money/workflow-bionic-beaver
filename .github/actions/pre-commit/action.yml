@@ -1,0 +1,37 @@
+name: Pre-commit
+description: Run pre-commit hooks
+
+inputs:
+  python_version:
+    description: Python version
+    required: false
+    default: "3.11"
+  pypi_user:
+    description: PyPI user
+    required: true
+  pypi_password:
+    description: PyPI password
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      if: ${{ github.event_name != 'pull_request_target' }}
+      uses: actions/checkout@v3
+    - name: Checkout PR
+      if: ${{ github.event_name == 'pull_request_target' }}
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+      uses: actions/checkout@v3
+    - name: Setup python
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Install dependencies
+      shell: bash
+      env:
+        PYPI_USER: ${{ inputs.pypi_user }}
+        PYPI_PASSWORD: ${{ inputs.pypi_password }}
+      run: make install-dev
+    - uses: pre-commit/action@v3.0.0

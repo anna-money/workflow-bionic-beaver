@@ -1,0 +1,28 @@
+name: Check changes
+description: Checks if there are any changes in the path
+
+inputs:
+  path:
+    description: Path to check
+    required: true
+outputs:
+  modified:
+    description: Is path modified
+    value: ${{ steps.modified.outputs.modified }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - id: modified
+      shell: bash
+      run: |
+        COMMITS=$(jq '.pull_request.commits // .commits | length' ${GITHUB_EVENT_PATH})
+        echo "Commits found: $COMMITS"
+        MODIFIED=$(git diff-index HEAD~$COMMITS ${{ inputs.path }} | wc -l | awk '{print $1}')
+        echo "Modified files: $MODIFIED"
+        echo "$(git diff-index --stat HEAD~$COMMITS ${{ inputs.path }})"
+        echo "modified=$MODIFIED" >> $GITHUB_OUTPUT
