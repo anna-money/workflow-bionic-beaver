@@ -1,5 +1,4 @@
 name: Check application
-description: Run tests and linters
 
 on:
   workflow_call:
