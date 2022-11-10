@@ -31,7 +31,7 @@ inputs:
 runs:
   using: composite
   env:
-    DOCKER_IMAGE: ${{ inputs.registry }}/${{ inputs.name }}
+    DOCKER_IMAGE: "${{ inputs.registry }}/${{ inputs.name }}"
   steps:
     - uses: actions/checkout@v3
     - uses: google-github-actions/auth@v0
