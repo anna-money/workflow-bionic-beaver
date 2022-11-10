@@ -30,8 +30,6 @@ inputs:
 
 runs:
   using: composite
-  env:
-    DOCKER_IMAGE: "${{ inputs.registry }}/${{ inputs.name }}"
   steps:
     - uses: actions/checkout@v3
     - uses: google-github-actions/auth@v0
@@ -49,19 +47,19 @@ runs:
       env:
         DOCKER_BUILDKIT: 1
       run: >
-        docker pull ${DOCKER_IMAGE}:latest || true
+        docker pull ${{ inputs.registry }}/${{ inputs.name }}:latest || true
 
-        docker build -t ci:temp --cache-from ${DOCKER_IMAGE}:latest
+        docker build -t ci:temp --cache-from ${{ inputs.registry }}/${{ inputs.name }}:latest
         --build-arg GIT_REVISION=$GITHUB_SHA
         --build-arg PYPI_USER=${{ inputs.pypi_user }}
         --build-arg PYPI_PASSWORD=${{ inputs.pypi_password }}
         --build-arg BUILDKIT_INLINE_CACHE=1 .
     - name: Push
       run: |
-        docker tag ci:temp ${DOCKER_IMAGE}:${{ inputs.version }}
-        docker push ${DOCKER_IMAGE}:${{ inputs.version }}
+        docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:${{ inputs.version }}
+        docker push ${{ inputs.registry }}/${{ inputs.name }}:${{ inputs.version }}
     - name: Push latest
       if: ${{ inputs.mark_latest == 'true' }}
       run: |
-        docker tag ci:temp ${DOCKER_IMAGE}:latest
-        docker push ${DOCKER_IMAGE}:latest
+        docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:latest
+        docker push ${{ inputs.registry }}/${{ inputs.name }}:latest
