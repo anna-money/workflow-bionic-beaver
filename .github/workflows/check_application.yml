@@ -15,6 +15,10 @@ on:
         required: false
         type: string
         default: "3-management-alpine"
+      mongo_version:
+        required: false
+        type: string
+        default: "4.4.18"
     secrets:
       pypi_user:
         description: PyPI user
@@ -46,6 +50,10 @@ jobs:
         image: rabbitmq:${{ inputs.rabbitmq_version }}
         ports:
           - 5672:5672
+      mongo:
+        image: mongo:${{ inputs.mongo_version }}
+        ports:
+          - 27017:27017
 
     steps:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
