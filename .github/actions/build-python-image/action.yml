@@ -37,7 +37,7 @@ runs:
         credentials_json: ${{ inputs.gcloud_service_account_key }}
     - uses: google-github-actions/setup-gcloud@v0
       with:
-        version: "275.0.0"
+        version: "410.0.0"
     - name: GCP login
       shell: bash
       run: gcloud auth configure-docker
