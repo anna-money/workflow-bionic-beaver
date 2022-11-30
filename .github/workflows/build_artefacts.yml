@@ -12,7 +12,7 @@ on:
     outputs:
       tag:
         description: 'Version of the built application'
-        value: ${{ steps.bump_version.outputs.tag }}
+        value: ${{ jobs.bump_version.outputs.tag }}
 
 jobs:
   check_changes_in_lib:
