@@ -65,7 +65,7 @@ jobs:
           name: ${{ inputs.app_name }}
           version: ${{ needs.bump_version.outputs.tag }}
           version_path: ${{ inputs.app_dir }}/version.py
-          registry: ${{ DOCKER_REGISTY }}
+          registry: ${{ secrets.DOCKER_REGISTY }}
           gcloud_service_account_key: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
