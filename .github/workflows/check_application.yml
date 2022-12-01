@@ -19,13 +19,6 @@ on:
         required: false
         type: string
         default: "4.4.18"
-    secrets:
-      pypi_user:
-        description: PyPI user
-        required: true
-      pypi_password:
-        description: PyPI password
-        required: true
 
 jobs:
   test:
@@ -59,8 +52,8 @@ jobs:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
         with:
           python_version: ${{ inputs.python_version }}
-          pypi_user: ${{ secrets.pypi_user }}
-          pypi_password: ${{ secrets.pypi_password }}
+          pypi_user: ${{ secrets.PYPI_USER }}
+          pypi_password: ${{ secrets.PYPI_PASSWORD }}
           rmq_hosts: 127.0.0.1:5672
           postgres_host: 127.0.0.1
           postgres_password: postgres
@@ -76,5 +69,5 @@ jobs:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/pre-commit@master
         with:
           python_version: ${{ inputs.python_version }}
-          pypi_user: ${{ secrets.pypi_user }}
-          pypi_password: ${{ secrets.pypi_password }}
+          pypi_user: ${{ secrets.PYPI_USER }}
+          pypi_password: ${{ secrets.PYPI_PASSWORD }}
