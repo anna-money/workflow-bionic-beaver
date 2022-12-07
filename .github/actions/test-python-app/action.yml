@@ -28,6 +28,14 @@ inputs:
     description: Postgres database
     required: false
     default: ""
+  mongo_db_name:
+    description: Mongo database
+    required: false
+    default: ""
+  mongo_connection_string:
+    description: Mongo connection string
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -57,4 +65,6 @@ runs:
         POSTGRES_TEST_DB_NAME: ${{ inputs.postgres_db_name }}
         POSTGRES_HOST: ${{ inputs.postgres_host }}
         RMQ_HOSTS: ${{ inputs.rmq_hosts }}
+        MONGODB_CONNECTION_STRING: ${{ inputs.mongo_connection_string }}
+        MONGO_DBNAME: ${{ inputs.mongo_db_name }}
       run: make test

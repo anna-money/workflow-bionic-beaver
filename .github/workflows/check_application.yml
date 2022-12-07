@@ -58,6 +58,8 @@ jobs:
           postgres_host: 127.0.0.1
           postgres_password: postgres
           postgres_db_name: test_database
+          mongo_connection_string: mongodb://127.0.0.1:27017
+          mongo_db_name: test_database
 
 
   pre-commit:
