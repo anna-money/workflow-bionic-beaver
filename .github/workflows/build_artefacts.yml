@@ -9,6 +9,14 @@ on:
       app_dir:
         required: true
         type: string
+      build_image:
+        required: false
+        type: boolean
+        default: true
+      build_lib:
+        required: false
+        type: boolean
+        default: true
     outputs:
       tag:
         description: 'Version of the built application'
@@ -17,6 +25,7 @@ on:
 jobs:
   check_changes_in_lib:
     runs-on: ubuntu-latest
+    if: ${{ inputs.build_lib }}
 
     outputs:
       modified: ${{ steps.modified.outputs.modified }}
@@ -42,7 +51,7 @@ jobs:
   build_lib:
     runs-on: ubuntu-latest
     needs: [ bump_version, check_changes_in_lib ]
-    if: ${{ needs.check_changes_in_lib.outputs.modified > 0 }}
+    if: ${{ inputs.build_lib }} && ${{ needs.check_changes_in_lib.outputs.modified > 0 }}
 
     steps:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@master
@@ -56,8 +65,8 @@ jobs:
 
   build_image:
     runs-on: ubuntu-latest
-
     needs: bump_version
+    if: ${{ inputs.build_image }}
 
     steps:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-image@master
