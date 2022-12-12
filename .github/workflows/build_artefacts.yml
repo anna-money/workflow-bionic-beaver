@@ -51,7 +51,7 @@ jobs:
   build_lib:
     runs-on: ubuntu-latest
     needs: [ bump_version, check_changes_in_lib ]
-    if: ${{ inputs.build_lib }} && ${{ needs.check_changes_in_lib.outputs.modified > 0 }}
+    if: ${{ inputs.build_lib && needs.check_changes_in_lib.outputs.modified > 0 }}
 
     steps:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@master
