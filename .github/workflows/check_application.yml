@@ -37,6 +37,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --entrypoint docker-entrypoint.sh postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=off -c bgwriter_lru_maxpages=0 -c jit=off
         ports:
           - 5432:5432
       rmq:
