@@ -50,10 +50,17 @@ jobs:
     steps:
       - name: Start PostgreSQL 14
         shell: bash
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_database
-        run: docker run -d -p 5432:5432 postgres:${{ inputs.postgres_version }}
+        run: >
+          docker run 
+          -p 5432:5432 
+          -e POSTGRES_DB=test_database 
+          -e POSTGRES_PASSWORD=postgres 
+          postgres:${{ inputs.postgres_version }} 
+          -c fsync=off 
+          -c full_page_writes=off 
+          -c synchronous_commit=off 
+          -c bgwriter_lru_maxpages=0 
+          -c jit=off
       - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
         with:
           python_version: ${{ inputs.python_version }}
