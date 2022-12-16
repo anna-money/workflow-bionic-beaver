@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: Start PostgreSQL ${{ inputs.postgres_version }}
-        if: ${{ inputs.postgres == 'true' }}
+        if: ${{ inputs.postgres }}
         shell: bash
         run: >
           docker run -d
@@ -55,14 +55,14 @@ jobs:
           -c bgwriter_lru_maxpages=0 
           -c jit=off
       - name: Start RabbitMQ ${{ inputs.rabbitmq_version }}
-        if: ${{ inputs.rabbitmq == 'true' }}
+        if: ${{ inputs.rabbitmq }}
         shell: bash
         run: >
           docker run -d
           -p 5672:5672 
           rabbitmq:${{ inputs.rabbitmq_version }}
       - name: Start MongoDB ${{ inputs.mongo_version }}
-        if: ${{ inputs.mongo == 'true' }}
+        if: ${{ inputs.mongo }}
         shell: bash
         run: >
           docker run -d
