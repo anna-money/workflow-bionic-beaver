@@ -51,7 +51,7 @@ jobs:
       - name: Start PostgreSQL 14
         shell: bash
         run: >
-          docker run 
+          docker run -d
           -p 5432:5432 
           -e POSTGRES_DB=test_database 
           -e POSTGRES_PASSWORD=postgres 
