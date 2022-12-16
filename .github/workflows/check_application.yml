@@ -37,7 +37,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          --entrypoint docker-entrypoint.sh postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=off -c bgwriter_lru_maxpages=0 -c jit=off
         ports:
           - 5432:5432
       rmq:
@@ -48,8 +47,13 @@ jobs:
         image: mongo:${{ inputs.mongo_version }}
         ports:
           - 27017:27017
-
     steps:
+      - name: Start PostgreSQL 14
+        shell: bash
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_database
+        run: docker run -d -p 5432:5432 postgres:${{ inputs.postgres_version }}
       - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
         with:
           python_version: ${{ inputs.python_version }}
