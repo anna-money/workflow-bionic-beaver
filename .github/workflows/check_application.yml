@@ -7,14 +7,26 @@ on:
         required: false
         type: string
         default: "3.11"
+      postgres:
+        required: false
+        type: boolean
+        default: true
       postgres_version:
         required: false
         type: string
         default: "14-alpine"
+      rabbitmq:
+        required: false
+        type: boolean
+        default: true
       rabbitmq_version:
         required: false
         type: string
         default: "3-management-alpine"
+      mongo:
+        required: false
+        type: boolean
+        default: true
       mongo_version:
         required: false
         type: string
@@ -26,29 +38,36 @@ jobs:
 
     timeout-minutes: 20
 
-    services:
-      postgres:
-        image: postgres:${{ inputs.postgres_version }}
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_database
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-      rmq:
-        image: rabbitmq:${{ inputs.rabbitmq_version }}
-        ports:
-          - 5672:5672
-      mongo:
-        image: mongo:${{ inputs.mongo_version }}
-        ports:
-          - 27017:27017
-
     steps:
+      - name: Start PostgreSQL ${{ inputs.postgres_version }}
+        if: ${{ inputs.postgres }}
+        shell: bash
+        run: >
+          docker run -d
+          -p 5432:5432 
+          -e POSTGRES_DB=test_database 
+          -e POSTGRES_PASSWORD=postgres 
+          postgres:${{ inputs.postgres_version }} 
+          postgres
+          -c fsync=off 
+          -c full_page_writes=off 
+          -c synchronous_commit=off 
+          -c bgwriter_lru_maxpages=0 
+          -c jit=off
+      - name: Start RabbitMQ ${{ inputs.rabbitmq_version }}
+        if: ${{ inputs.rabbitmq }}
+        shell: bash
+        run: >
+          docker run -d
+          -p 5672:5672 
+          rabbitmq:${{ inputs.rabbitmq_version }}
+      - name: Start MongoDB ${{ inputs.mongo_version }}
+        if: ${{ inputs.mongo }}
+        shell: bash
+        run: >
+          docker run -d
+          -p 27017:27017 
+          mongo:${{ inputs.mongo_version }}
       - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@master
         with:
           python_version: ${{ inputs.python_version }}
