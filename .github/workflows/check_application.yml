@@ -48,7 +48,7 @@ jobs:
         ports:
           - 27017:27017
     steps:
-      - name: Start PostgreSQL 14
+      - name: Start PostgreSQL ${{ inputs.postgres_version }}
         shell: bash
         run: >
           docker run -d
@@ -56,6 +56,7 @@ jobs:
           -e POSTGRES_DB=test_database 
           -e POSTGRES_PASSWORD=postgres 
           postgres:${{ inputs.postgres_version }} 
+          postgres
           -c fsync=off 
           -c full_page_writes=off 
           -c synchronous_commit=off 
