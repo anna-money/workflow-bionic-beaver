@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - id: dev-tag
-        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@20b7dd64205250f4872e59d4484103ce862967a1
+        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@ff7b041b4b7651809eed5385b11d0c2b1ce825c0
 
   build_lib:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
     if: needs.check_changes_in_lib.outputs.modified > 0
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@20b7dd64205250f4872e59d4484103ce862967a1
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@ff7b041b4b7651809eed5385b11d0c2b1ce825c0
         with:
           version: ${{ needs.get_dev_tag.outputs.tag }}
           version_path: ${{ inputs.app_dir }}/version.py
