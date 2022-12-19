@@ -68,7 +68,7 @@ jobs:
           docker run -d
           -p 27017:27017 
           mongo:${{ inputs.mongo_version }}
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@7261676adf09dfebffac343abb1cd5c565f501bc
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/test-python-app@20b7dd64205250f4872e59d4484103ce862967a1
         with:
           python_version: ${{ inputs.python_version }}
           pypi_user: ${{ secrets.PYPI_USER }}
@@ -87,7 +87,7 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/pre-commit@7261676adf09dfebffac343abb1cd5c565f501bc
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/pre-commit@20b7dd64205250f4872e59d4484103ce862967a1
         with:
           python_version: ${{ inputs.python_version }}
           pypi_user: ${{ secrets.PYPI_USER }}
