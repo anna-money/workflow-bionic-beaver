@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - id: dev-tag
-        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@master
+        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@fix/modern-mongodb-db-name
 
   build_lib:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
     if: needs.check_changes_in_lib.outputs.modified > 0
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@master
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@fix/modern-mongodb-db-name
         with:
           version: ${{ needs.get_dev_tag.outputs.tag }}
           version_path: ${{ inputs.app_dir }}/version.py

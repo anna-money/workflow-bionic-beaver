@@ -54,7 +54,7 @@ jobs:
     if: ${{ inputs.build_lib && needs.check_changes_in_lib.outputs.modified > 0 }}
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@master
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@fix/modern-mongodb-db-name
         with:
           version: ${{ needs.bump_version.outputs.tag }}
           version_path: ${{ inputs.app_dir }}/version.py
@@ -69,7 +69,7 @@ jobs:
     if: ${{ inputs.build_image }}
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-image@master
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-image@fix/modern-mongodb-db-name
         with:
           name: ${{ inputs.app_name }}
           version: ${{ needs.bump_version.outputs.tag }}
