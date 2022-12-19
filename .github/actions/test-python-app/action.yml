@@ -16,6 +16,10 @@ inputs:
     description: RabbitMQ hosts
     required: false
     default: ""
+  rmq_vhost:
+    description: RabbitMQ vhost
+    required: false
+    default: ""
   postgres_host:
     description: Postgres host
     required: false
@@ -65,7 +69,7 @@ runs:
         POSTGRES_TEST_DB_NAME: ${{ inputs.postgres_db_name }}
         POSTGRES_HOST: ${{ inputs.postgres_host }}
         RMQ_HOSTS: ${{ inputs.rmq_hosts }}
+        RMQ_VHOST: ${{ inputs.rmq_vhost }}
         MONGODB_CONNECTION_STRING: ${{ inputs.mongo_connection_string }}
         MONGODB_DBNAME: ${{ inputs.mongo_db_name }}
-        MONGO_DBNAME: ${{ inputs.mongo_db_name }}
       run: make test
