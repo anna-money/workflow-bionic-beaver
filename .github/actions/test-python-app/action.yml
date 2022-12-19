@@ -66,5 +66,6 @@ runs:
         POSTGRES_HOST: ${{ inputs.postgres_host }}
         RMQ_HOSTS: ${{ inputs.rmq_hosts }}
         MONGODB_CONNECTION_STRING: ${{ inputs.mongo_connection_string }}
+        MONGODB_DBNAME: ${{ inputs.mongo_db_name }}
         MONGO_DBNAME: ${{ inputs.mongo_db_name }}
       run: make test
