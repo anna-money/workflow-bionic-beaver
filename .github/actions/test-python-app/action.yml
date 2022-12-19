@@ -12,8 +12,20 @@ inputs:
   pypi_password:
     description: PyPI password
     required: true
+  rmq_user:
+    description: RabbitMQ user
+    required: false
+    default: ""
+  rmq_password:
+    description: RabbitMQ password
+    required: false
+    default: ""
   rmq_hosts:
     description: RabbitMQ hosts
+    required: false
+    default: ""
+  rmq_vhost:
+    description: RabbitMQ vhost
     required: false
     default: ""
   postgres_host:
@@ -64,7 +76,10 @@ runs:
         POSTGRES_PASSWORD: ${{ inputs.postgres_password }}
         POSTGRES_TEST_DB_NAME: ${{ inputs.postgres_db_name }}
         POSTGRES_HOST: ${{ inputs.postgres_host }}
+        RMQ_USER: ${{ inputs.rmq_user }}
+        RMQ_PASSWORD: ${{ inputs.rmq_password }}
         RMQ_HOSTS: ${{ inputs.rmq_hosts }}
+        RMQ_VHOST: ${{ inputs.rmq_vhost }}
         MONGODB_CONNECTION_STRING: ${{ inputs.mongo_connection_string }}
-        MONGO_DBNAME: ${{ inputs.mongo_db_name }}
+        MONGODB_DBNAME: ${{ inputs.mongo_db_name }}
       run: make test

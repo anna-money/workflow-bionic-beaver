@@ -73,7 +73,10 @@ jobs:
           python_version: ${{ inputs.python_version }}
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
+          rmq_user: guest
+          rmq_password: guest
           rmq_hosts: 127.0.0.1:5672
+          rmq_vhost: /
           postgres_host: 127.0.0.1
           postgres_password: postgres
           postgres_db_name: test_database
