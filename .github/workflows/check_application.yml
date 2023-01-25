@@ -82,6 +82,7 @@ jobs:
           postgres_db_name: test_database
           mongo_connection_string: mongodb://127.0.0.1:27017
           mongo_db_name: test_database
+          mongo_csfle_key: QVluGLxJJp1xMk1NraMUOji4M8d2wLAas7E9u4rK-64o5ZhBHs1-WoR5aQvm1ugxwB64tBD0P3b3XbJw0EOO6Rn_QIODfM7vTAB8n9gpkXPkMha97HtKodCziXz4UDOC
 
 
   pre-commit:

@@ -48,6 +48,10 @@ inputs:
     description: Mongo connection string
     required: false
     default: ""
+  mongo_csfle_key:
+    description: Mongo csfle key
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -82,4 +86,5 @@ runs:
         RMQ_VHOST: ${{ inputs.rmq_vhost }}
         MONGODB_CONNECTION_STRING: ${{ inputs.mongo_connection_string }}
         MONGODB_DBNAME: ${{ inputs.mongo_db_name }}
+        MONGODB_CSFLE_KEY: ${{ inputs.mongo_csfle_key }}
       run: make test
