@@ -17,6 +17,10 @@ on:
         required: false
         type: boolean
         default: true
+      use_poetry_version:
+        required: false
+        type: boolean
+        default: false
     outputs:
       tag:
         description: 'Version of the built application'
@@ -78,3 +82,4 @@ jobs:
           gcloud_service_account_key: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
+          use_poetry_version: ${{ inputs.use_poetry_version }}

@@ -27,6 +27,10 @@ inputs:
     description: Mark as latest
     required: false
     default: 'true'
+  use_poetry_version:
+    description: Use poetry version command instead of rewriting version in version_path
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -43,7 +47,14 @@ runs:
       run: gcloud auth configure-docker
     - name: Update tag
       shell: bash
+      if: ${{ inputs.use_poetry_version == 'false' }}
       run: echo "__version__ = '${{ inputs.version }}'" > ${{ inputs.version_path }}
+    - name: Update tag
+      shell: bash
+      if: ${{ inputs.use_poetry_version == 'true' }}
+      run: |
+        pip install poetry
+        poetry version ${{ inputs.version }}
     - name: Build
       shell: bash
       env:
