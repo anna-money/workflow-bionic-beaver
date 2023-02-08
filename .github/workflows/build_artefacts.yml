@@ -69,7 +69,7 @@ jobs:
     if: ${{ inputs.build_image }}
 
     steps:
-      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-image@master
+      - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-image@use-poetry-version
         with:
           name: ${{ inputs.app_name }}
           version: ${{ needs.bump_version.outputs.tag }}
