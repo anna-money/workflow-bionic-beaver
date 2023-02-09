@@ -8,9 +8,6 @@ inputs:
   version:
     description: Application version
     required: true
-  version_path:
-    description: Application version path
-    required: true
   registry:
     description: Docker registry url
     required: true
@@ -43,7 +40,7 @@ runs:
       run: gcloud auth configure-docker
     - name: Update tag
       shell: bash
-      run: echo "__version__ = '${{ inputs.version }}'" > ${{ inputs.version_path }}
+      run: make set-version version="${{ inputs.version }}"
     - name: Build
       shell: bash
       env:
