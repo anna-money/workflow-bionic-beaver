@@ -24,7 +24,7 @@ inputs:
     description: Mark as latest
     required: false
     default: 'true'
-  use_dev_docker:
+  dirty_tag:
     required: false
     default: false
 
@@ -60,7 +60,7 @@ runs:
       shell: bash
       id: get_docker_tag
       run: |
-        if [[ ${{ inputs.use_dev_docker == 'true' }} ]]; then
+        if [[ ${{ inputs.dirty_tag == 'true' }} ]]; then
           OLD_TAG="${{ inputs.version }}"
           TAG=$(echo ${OLD_TAG} | sed 's/+/-/g')
           echo "::set-output name=tag::$TAG"

@@ -17,7 +17,7 @@ on:
         required: false
         type: boolean
         default: true
-      use_dev_docker:
+      dirty_tag:
         required: false
         type: boolean
         default: false
@@ -75,5 +75,5 @@ jobs:
           gcloud_service_account_key: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
-          use_dev_docker: ${{ inputs.use_dev_docker }}
+          dirty_tag: ${{ inputs.dirty_tag }}
           mark_latest: false
