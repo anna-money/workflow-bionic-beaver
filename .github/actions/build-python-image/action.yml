@@ -74,7 +74,7 @@ runs:
         docker push ${{ inputs.registry }}/${{ inputs.name }}:${{ steps.get_docker_tag.outputs.tag }}
     - name: Push latest
       shell: bash
-      if: ${{ inputs.mark_latest == 'true' && inputs.use_dev_docker == 'false' }}
+      if: ${{ inputs.mark_latest == 'true' }}
       run: |
         docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:latest
         docker push ${{ inputs.registry }}/${{ inputs.name }}:latest

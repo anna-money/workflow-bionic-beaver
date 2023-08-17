@@ -76,3 +76,4 @@ jobs:
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
           use_dev_docker: ${{ inputs.use_dev_docker }}
+          mark_latest: false
