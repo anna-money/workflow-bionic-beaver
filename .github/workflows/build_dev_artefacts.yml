@@ -13,10 +13,19 @@ on:
         required: false
         type: boolean
         default: false
+      build_lib:
+        required: false
+        type: boolean
+        default: true
+      dirty_tag:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   check_changes_in_lib:
     runs-on: ubuntu-latest
+    if: ${{ inputs.build_lib }}
 
     outputs:
       modified: ${{ steps.modified.outputs.modified }}
@@ -39,10 +48,8 @@ jobs:
 
   build_lib:
     runs-on: ubuntu-latest
-
     needs: [ check_changes_in_lib, get_dev_tag ]
-
-    if: needs.check_changes_in_lib.outputs.modified > 0
+    if: ${{ inputs.build_lib && needs.check_changes_in_lib.outputs.modified > 0 }}
 
     steps:
       - uses: anna-money/workflow-bionic-beaver/.github/actions/build-python-package@master
@@ -68,3 +75,5 @@ jobs:
           gcloud_service_account_key: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
           pypi_user: ${{ secrets.PYPI_USER }}
           pypi_password: ${{ secrets.PYPI_PASSWORD }}
+          dirty_tag: ${{ inputs.dirty_tag }}
+          mark_latest: false
