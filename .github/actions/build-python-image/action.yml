@@ -24,6 +24,9 @@ inputs:
     description: Mark as latest
     required: false
     default: 'true'
+  use_dev_docker:
+    required: false
+    default: false
 
 runs:
   using: composite
@@ -53,14 +56,25 @@ runs:
         --build-arg PYPI_USER=${{ inputs.pypi_user }}
         --build-arg PYPI_PASSWORD=${{ inputs.pypi_password }}
         --build-arg BUILDKIT_INLINE_CACHE=1 .
+    - name: Get docker tag
+      shell: bash
+      id: get_docker_tag
+      run: |
+        if [[ ${{ inputs.use_dev_docker == 'true' }} ]]; then
+          OLD_TAG="${{ inputs.version }}"
+          TAG=$(echo ${OLD_TAG} | sed 's/+/-/g')
+          echo "::set-output name=tag::$TAG"
+        else
+          echo "::set-output name=tag::${{ inputs.version }}"
+        fi
     - name: Push
       shell: bash
       run: |
-        docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:${{ inputs.version }}
-        docker push ${{ inputs.registry }}/${{ inputs.name }}:${{ inputs.version }}
+        docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:${{ steps.get_docker_tag.outputs.tag }}
+        docker push ${{ inputs.registry }}/${{ inputs.name }}:${{ steps.get_docker_tag.outputs.tag }}
     - name: Push latest
       shell: bash
-      if: ${{ inputs.mark_latest == 'true' }}
+      if: ${{ inputs.mark_latest == 'true' && inputs.use_dev_docker == 'false' }}
       run: |
         docker tag ci:temp ${{ inputs.registry }}/${{ inputs.name }}:latest
         docker push ${{ inputs.registry }}/${{ inputs.name }}:latest
