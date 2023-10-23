@@ -30,7 +30,7 @@ on:
       mongo_version:
         required: false
         type: string
-        default: "5.0"
+        default: "6.0"
 
 jobs:
   test:
