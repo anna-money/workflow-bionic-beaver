@@ -63,9 +63,9 @@ runs:
         if [[ ${{ inputs.dirty_tag == 'true' }} ]]; then
           OLD_TAG="${{ inputs.version }}"
           TAG=$(echo ${OLD_TAG} | sed 's/+/-/g')
-          echo "::set-output name=tag::$TAG"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=tag::${{ inputs.version }}"
+          echo "tag=${{ inputs.version }}" >> $GITHUB_OUTPUT
         fi
     - name: Push
       shell: bash
