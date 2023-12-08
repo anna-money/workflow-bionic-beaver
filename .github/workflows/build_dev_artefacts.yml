@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - id: dev-tag
-        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@tech/tech/setuptools-69.0.0
+        uses: anna-money/workflow-bionic-beaver/.github/actions/get-dev-tag@master
 
   build_lib:
     runs-on: ubuntu-latest
