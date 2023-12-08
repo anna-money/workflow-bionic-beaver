@@ -15,4 +15,4 @@ runs:
     - name: Get git tag
       shell: bash
       id: dev-tag
-      run: echo "tag=$(git describe --tags --long --dirty | sed -E 's/(.*)-(.*)-(.*)/\1.dev\2+\3/')" >> $GITHUB_OUTPUT
+      run: git describe --tags --long --dirty; if [ $? = 0 ]; then echo "tag=$(git describe --tags --long --dirty | sed -E 's/(.*)-(.*)-(.*)/\1.dev\2+\3/')" >> $GITHUB_OUTPUT; else echo "tag=0.0.dev0+$(git describe --tags --long --dirty --always)" >> $GITHUB_OUTPUT; fi;
