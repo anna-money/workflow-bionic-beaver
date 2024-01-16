@@ -10,7 +10,7 @@ on:
       postgres:
         required: false
         type: boolean
-        default: true
+        default: false
       postgres_version:
         required: false
         type: string
@@ -18,7 +18,7 @@ on:
       rabbitmq:
         required: false
         type: boolean
-        default: true
+        default: false
       rabbitmq_version:
         required: false
         type: string
@@ -26,7 +26,7 @@ on:
       mongo:
         required: false
         type: boolean
-        default: true
+        default: false
       mongo_version:
         required: false
         type: string
