@@ -35,7 +35,7 @@ runs:
     - uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ inputs.gcloud_service_account_key }}
-    - uses: google-github-actions/setup-gcloud@v0
+    - uses: google-github-actions/setup-gcloud@v2
       with:
         version: "410.0.0"
     - name: GCP login
