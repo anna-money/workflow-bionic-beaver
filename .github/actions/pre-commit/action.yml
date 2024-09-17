@@ -18,14 +18,14 @@ runs:
   steps:
     - name: Checkout
       if: ${{ github.event_name != 'pull_request_target' }}
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.1.7
     - name: Checkout PR
       if: ${{ github.event_name == 'pull_request_target' }}
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.1.7
     - name: Setup python
-      uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v5.2.0
       with:
         python-version: ${{ inputs.python_version }}
     - name: Install dependencies
@@ -34,4 +34,4 @@ runs:
         PYPI_USER: ${{ inputs.pypi_user }}
         PYPI_PASSWORD: ${{ inputs.pypi_password }}
       run: make install-dev
-    - uses: pre-commit/action@v3.0.0
+    - uses: pre-commit/action@v3.0.1
