@@ -41,6 +41,10 @@ runs:
     - name: GCP login
       shell: bash
       run: gcloud auth configure-docker
+    - name: Set up Python
+      uses: actions/setup-python@v5.2.0
+      with:
+        python-version: '3.x'
     - name: Update tag
       shell: bash
       run: make set-version version="${{ inputs.version }}"
