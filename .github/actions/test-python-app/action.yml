@@ -54,14 +54,14 @@ runs:
   steps:
     - name: Checkout
       if: ${{ github.event_name != 'pull_request_target' }}
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Checkout PR
       if: ${{ github.event_name == 'pull_request_target' }}
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Setup python
-      uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v5.2.0
       with:
         python-version: ${{ inputs.python_version }}
     - name: Install dependencies

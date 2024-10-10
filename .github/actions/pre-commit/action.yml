@@ -18,12 +18,12 @@ runs:
   steps:
     - name: Checkout
       if: ${{ github.event_name != 'pull_request_target' }}
-      uses: actions/checkout@v4.1.7
+      uses: actions/checkout@v4
     - name: Checkout PR
       if: ${{ github.event_name == 'pull_request_target' }}
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-      uses: actions/checkout@v4.1.7
+      uses: actions/checkout@v4
     - name: Setup python
       uses: actions/setup-python@v5.2.0
       with:
