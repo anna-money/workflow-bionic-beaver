@@ -21,6 +21,10 @@ on:
         required: false
         type: boolean
         default: false
+    outputs:
+      tag:
+        description: 'Version of the built application'
+        value: ${{ jobs.get_dev_tag.outputs.tag }}
 
 jobs:
   check_changes_in_lib:
