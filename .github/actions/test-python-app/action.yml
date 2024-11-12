@@ -73,9 +73,12 @@ runs:
     - name: Test with pytest
       shell: bash
       env:
+        POSTGRES_USER: "postgres"
         POSTGRES_PASSWORD: ${{ inputs.postgres_password }}
+        POSTGRES_DBNAME: ${{ inputs.postgres_db_name }}
         POSTGRES_TEST_DB_NAME: ${{ inputs.postgres_db_name }}
         POSTGRES_HOST: ${{ inputs.postgres_host }}
+        POSTGRES_PORT: "5342"
         RMQ_USER: ${{ inputs.rmq_user }}
         RMQ_PASSWORD: ${{ inputs.rmq_password }}
         RMQ_HOSTS: ${{ inputs.rmq_hosts }}
