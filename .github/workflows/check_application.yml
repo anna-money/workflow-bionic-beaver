@@ -22,7 +22,7 @@ on:
       rabbitmq_version:
         required: false
         type: string
-        default: "3-management-alpine"
+        default: "3.13.6-management-alpine"
       mongo:
         required: false
         type: boolean
